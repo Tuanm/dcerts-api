@@ -1,0 +1,8 @@
+{
+    "abi": [
+        "event VotingStarted(uint indexed actionId, address indexed starter)",
+        "event Voted(uint indexed actionId, address indexed voter)",
+        "event ActionExecuted(uint indexed actionId)",
+        "event ActionCancelled(uint indexed actionId)"
+    ]
+}

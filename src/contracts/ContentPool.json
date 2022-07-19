@@ -1,0 +1,8 @@
+{
+    "abi": [
+        "function get(uint _id) public view returns (tuple(uint id, uint timestamp, address author, bool locked, string cid))",
+        "event ContentAdded(address indexed author, uint indexed id, string indexed cid)",
+        "event ContentLocked(address indexed author, uint indexed id)",
+        "event ContentUnlocked(address indexed author, uint indexed id)"
+    ]
+}
