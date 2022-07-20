@@ -3,6 +3,8 @@ import { bufferToHex } from 'ethereumjs-util';
 import { Request } from 'express';
 import jwt from 'jsonwebtoken';
 import { configuration } from '.';
+import { groupsOfMember } from '../services/db/groups';
+import { Error } from '../services/error';
 
 /**
  * Generates a JWT for a specific account.
@@ -17,7 +19,7 @@ export function generateToken(account: {
 }
 
 function verifyToken(token: string): {
-    id?: string,
+    id: string,
     nonce?: string,
     exp?: number,
 } {
@@ -27,7 +29,9 @@ function verifyToken(token: string): {
             nonce: string,
         };
     } catch (err) {
-        return {};
+        return {
+            id: '',
+        };
     }
 }
 
@@ -50,23 +54,28 @@ function getTokenFromRequest(req: Request) {
 /**
  * Validates the JSON Web Token (JWT) of the request.
  */
-export function validateJwt(req: Request) {
+export async function validateJwt(req: Request) {
     const token = getTokenFromRequest(req);
-    if (!token) throw new Error();
+    if (!token) throw Error.of(401, 'Token must be included');
     const payload = verifyToken(token);
-    if (!payload || !payload.id) throw new Error();
+    if (!payload || !payload.id) throw Error.of(401, 'Token invalid');
     const expired = !payload.exp
         ? true
         : payload.exp * 1000 < Date.now();
-    if (expired) throw new Error();
-    return payload.id;
+    if (expired) throw Error.of(401, 'Token expired');
+    const accountId = payload.id;
+    const groups = await groupsOfMember(accountId);
+    if (!groups.includes(payload.nonce)) throw Error.of(401, 'Not in any groups');
+    return accountId;
 }
 
 /**
  * Retrieves the account identity from a request.
  */
 export function getAccountFromRequest(req: Request) {
-    return validateJwt(req);
+    const token = getTokenFromRequest(req);
+    const { id } = verifyToken(token);
+    return id;
 }
 
 /**

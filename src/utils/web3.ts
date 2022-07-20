@@ -1,5 +1,6 @@
 import { ethers } from 'ethers';
 import { configuration } from '.';
+import { Error } from '../services/error';
 
 /**
  * Returns the Web3 provider.
@@ -19,7 +20,7 @@ export function getContract(address: string, contractName: string, signer: ether
         const contractInterface = new ethers.utils.Interface(abi);
         return new ethers.Contract(address, contractInterface, signer);
     }
-    throw new Error('Contract not found');
+    throw Error.of(500, `Contract ${contractName} not found`);
 }
 
 /**

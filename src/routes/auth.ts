@@ -3,9 +3,8 @@ import { getNonce, validateSignature } from '../services/auth';
 
 const router = Router();
 
-router.get('/:accountId', async (req, res) => {
-    const accountId = req.params.accountId;
-    const nonce = await getNonce(accountId);
+router.get('/', async (req, res) => {
+    const nonce = await getNonce();
     res.json(nonce);
 });
 

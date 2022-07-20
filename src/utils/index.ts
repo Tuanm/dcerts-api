@@ -1,4 +1,5 @@
 import { Configuration } from '../config';
+import { Error } from '../services/error';
 
 let config: Configuration;
 
@@ -13,5 +14,6 @@ export function configure(configuration: Configuration) {
  * Returns utilities' configurations.
  */
 export function configuration() {
+    if (!config) throw Error.of(500, 'Application not configured');
     return config;
 }

@@ -7,7 +7,7 @@ const collection = 'groups';
 type GroupEntity = Group & Entity;
 
 export async function ids() {
-    return await db.distinct(collection, 'id', {}) || [];
+    return await db.distinct(collection, 'id', {}) || [] as string[];
 }
 
 export async function add(group: GroupEntity) {
@@ -16,9 +16,9 @@ export async function add(group: GroupEntity) {
 }
 
 export async function groupsOfMember(member: string) {
-    return db.search(collection, { member });
+    return await db.distinct(collection, 'id', { member }) || [] as string[];
 }
 
 export async function membersOfGroup(group: string) {
-    return await db.search(collection, { id: group }) || [];
+    return await db.distinct(collection, 'member', { id: group }) || [] as string[];
 }

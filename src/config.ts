@@ -34,6 +34,10 @@ export interface Configuration {
      */
     web3: {
         /**
+         * The interval for automatically fetching logs from the network.
+         */
+        fetchInterval: number,
+        /**
          * Provider.
          */
         provider: {
@@ -67,7 +71,7 @@ export interface Configuration {
  * Configures stuff.
  */
 export function configure() {
-    config();
+    if (!process.env.PRODUCTION) config();
     return {
         app: {
             port: process.env.PORT || 8080,
@@ -84,12 +88,13 @@ export function configure() {
             port: Number(process.env.IPFS_PORT),
         },
         web3: {
+            fetchInterval: Number(process.env.WEB3_FETCH_INTERVAL) || 60000,
             provider: {
                 url: process.env.WEB3_URL || '',
             },
             contract: {
                 contentPool: {
-                    address: process.env.CONTENT_POOL_ADDRESS || '',
+                    address: process.env.WEB3_CONTENT_POOL_ADDRESS || '',
                     abi: ContentPool.abi,
                 },
                 ballotWallet: {
