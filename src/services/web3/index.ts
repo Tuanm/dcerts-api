@@ -26,9 +26,9 @@ export async function fetchLogs() {
             onActionExecuted(id, await getLogs(id, 'BallotWallet', 'ActionExecuted', [], fromBlock, toBlock));
             onActionCancelled(id, await getLogs(id, 'BallotWallet', 'ActionCancelled', [], fromBlock, toBlock));
             if (poolId) {
-                onContentAdded(await getLogs(poolId, 'ContentPool', 'ContentAdded', [id], fromBlock, toBlock));
-                onContentLocked(await getLogs(poolId, 'ContentPool', 'ContentLocked', [id], fromBlock, toBlock));
-                onContentUnlocked(await getLogs(poolId, 'ContentPool', 'ContentUnlocked', [id], fromBlock, toBlock));
+                onContentAdded(id, await getLogs(poolId, 'ContentPool', 'ContentAdded', [id], fromBlock, toBlock));
+                onContentLocked(id, await getLogs(poolId, 'ContentPool', 'ContentLocked', [id], fromBlock, toBlock));
+                onContentUnlocked(id, await getLogs(poolId, 'ContentPool', 'ContentUnlocked', [id], fromBlock, toBlock));
             }
             logger.info(`Fetched logs for group ${id}`);
         }
