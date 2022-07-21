@@ -25,7 +25,7 @@ export class DB {
         return this.collection(collection).distinct(field, query);
     }
 
-    async search(collection: string, query: Object, sort?: any, limit?: number) {
+    async search(collection: string, query: Object, sort?: any, limit: number = 0) {
         let cursor = this.collection(collection).find(query);
         if (sort) cursor = cursor.sort(sort);
         if (limit) cursor = cursor.limit(limit);

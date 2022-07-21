@@ -17,16 +17,19 @@ export async function fetchLogs() {
             value: fromBlock,
         });
     }
-    if (fromBlock < toBlock) {
+    if (fromBlock + 1 < toBlock) {
+        const poolId = process.env.WEB3_CONTENT_POOL_ADDRESS;
         for (const id of await groups.ids()) {
             logger.info(`Fetching logs for group ${id}`);
-            onVotingStarted(await getLogs(id, 'BallotWallet', 'VotingStarted', [], fromBlock, toBlock));
-            onVoted(await getLogs(id, 'BallotWallet', 'Voted', [], fromBlock, toBlock));
-            onActionExecuted(await getLogs(id, 'BallotWallet', 'ActionExecuted', [], fromBlock, toBlock));
-            onActionCancelled(await getLogs(id, 'BallotWallet', 'ActionCancelled', [], fromBlock, toBlock));
-            onContentAdded(await getLogs(id, 'ContentPool', 'ContentAdded', [id], fromBlock, toBlock));
-            onContentLocked(await getLogs(id, 'ContentPool', 'ContentLocked', [id], fromBlock, toBlock));
-            onContentUnlocked(await getLogs(id, 'ContentPool', 'ContentUnlocked', [id], fromBlock, toBlock));
+            onVotingStarted(id, await getLogs(id, 'BallotWallet', 'VotingStarted', [], fromBlock, toBlock));
+            onVoted(id, await getLogs(id, 'BallotWallet', 'Voted', [], fromBlock, toBlock));
+            onActionExecuted(id, await getLogs(id, 'BallotWallet', 'ActionExecuted', [], fromBlock, toBlock));
+            onActionCancelled(id, await getLogs(id, 'BallotWallet', 'ActionCancelled', [], fromBlock, toBlock));
+            if (poolId) {
+                onContentAdded(await getLogs(poolId, 'ContentPool', 'ContentAdded', [id], fromBlock, toBlock));
+                onContentLocked(await getLogs(poolId, 'ContentPool', 'ContentLocked', [id], fromBlock, toBlock));
+                onContentUnlocked(await getLogs(poolId, 'ContentPool', 'ContentUnlocked', [id], fromBlock, toBlock));
+            }
             logger.info(`Fetched logs for group ${id}`);
         }
         await settings.update({

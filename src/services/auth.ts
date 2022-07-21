@@ -1,4 +1,4 @@
-import { Request } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { generateToken, isSignatureValid, randomizeText, validateJwt } from '../utils/auth';
 import { groupsOfMember } from './db/groups';
 import { Error } from '../services/error';
@@ -42,6 +42,7 @@ export async function validateSignature(accountId: string, signature: string) {
 /**
  * Permits the requests with valid JWT included.
  */
-export async function filterJwt(req: Request) {
-    return validateJwt(req);
+export function filterJwt(req: Request, res: Response, next: NextFunction) {
+    validateJwt(req);
+    return next();
 }

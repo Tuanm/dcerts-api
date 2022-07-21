@@ -3,7 +3,6 @@ import { bufferToHex } from 'ethereumjs-util';
 import { Request } from 'express';
 import jwt from 'jsonwebtoken';
 import { configuration } from '.';
-import { groupsOfMember } from '../services/db/groups';
 import { Error } from '../services/error';
 
 /**
@@ -54,7 +53,7 @@ function getTokenFromRequest(req: Request) {
 /**
  * Validates the JSON Web Token (JWT) of the request.
  */
-export async function validateJwt(req: Request) {
+export function validateJwt(req: Request) {
     const token = getTokenFromRequest(req);
     if (!token) throw Error.of(401, 'Token must be included');
     const payload = verifyToken(token);
@@ -64,8 +63,6 @@ export async function validateJwt(req: Request) {
         : payload.exp * 1000 < Date.now();
     if (expired) throw Error.of(401, 'Token expired');
     const accountId = payload.id;
-    const groups = await groupsOfMember(accountId);
-    if (!groups.includes(payload.nonce)) throw Error.of(401, 'Not in any groups');
     return accountId;
 }
 

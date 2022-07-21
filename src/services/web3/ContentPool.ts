@@ -5,11 +5,11 @@ export async function onContentAdded(events: ethers.Event[]) {
     for (const event of events) {
         const author = event.topics[1];
         const contentId = event.topics[2];
-        const cid = event.topics[3];
+        const tag = event.topics[3];
         await contents.add({
             group: author,
             id: Number(contentId),
-            cid,
+            tag: Number(tag),
         });
     }
 }
