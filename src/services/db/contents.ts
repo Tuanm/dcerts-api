@@ -14,7 +14,7 @@ export async function update(content: Content & Entity) {
     content.updatedAt = Date.now();
     return db.updateOne(collection, {
         group: content.group,
-        tag: content.tag,
+        id: content.id,
     }, content) || {};
 }
 
