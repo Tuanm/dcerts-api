@@ -9,7 +9,7 @@ export async function onContentAdded(group: string, events: ethers.Event[]) {
         await contents.add({
             group,
             id: Number(contentId),
-            tag: Number(tag),
+            tag,
         });
         logger.info(`Content with id '${contentId}' added`);
     }

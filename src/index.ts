@@ -20,6 +20,7 @@ import auth from './routes/auth';
 import search from './routes/search';
 import wall from './routes/wall';
 import { filterJwt } from './services/auth';
+import { logRequest } from './services/log';
 import { handleError, handleNotFound } from './services/error';
 import { fetchLogs } from './services/web3';
 
@@ -27,6 +28,7 @@ const app: Express = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(logRequest);
 app.use('/auth', auth);
 app.use('/search', filterJwt, search);
 app.use('/wall', filterJwt, wall);

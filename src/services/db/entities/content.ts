@@ -1,7 +1,7 @@
 export interface Content {
     group: string,
     id?: number,
-    tag?: number,
+    tag?: string,
     batch?: number,
     locked?: boolean,
 }

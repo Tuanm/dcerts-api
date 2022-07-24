@@ -28,6 +28,9 @@ export interface Configuration {
     ipfs: {
         host: string,
         port: number,
+        headers: {
+            authorization: string | undefined,
+        },
     },
     /**
      * Contains the Web3 configurations.
@@ -86,6 +89,9 @@ export function configure() {
         ipfs: {
             host: process.env.IPFS_HOST || '',
             port: Number(process.env.IPFS_PORT),
+            headers: {
+                authorization: process.env.IPFS_AUTHORIZATION,
+            },
         },
         web3: {
             fetchInterval: Number(process.env.WEB3_FETCH_INTERVAL) || 60000,

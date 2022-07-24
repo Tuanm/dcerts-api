@@ -1,8 +1,8 @@
 {
     "abi": [
-        "event ContentAdded(address indexed author, uint indexed id, uint indexed tag)",
-        "event ContentLocked(address indexed author, uint indexed id, uint indexed tag)",
-        "event ContentUnlocked(address indexed author, uint indexed id, uint indexed tag)",
+        "event ContentAdded(address indexed author, uint indexed id, string indexed tag)",
+        "event ContentLocked(address indexed author, uint indexed id, string indexed tag)",
+        "event ContentUnlocked(address indexed author, uint indexed id, string indexed tag)",
         "event BatchAdded(address indexed author, uint indexed batchId, uint indexed contentId)",
         "event BatchLocked(address indexed author, uint indexed batchId, uint indexed contentId)",
         "event BatchUnlocked(address indexed author, uint indexed batchId, uint indexed contentId)"
