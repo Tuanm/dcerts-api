@@ -1,13 +1,19 @@
 import { db } from '.';
+import logger from '../../utils/logger';
 import { Content } from './entities/content';
 import { Entity } from './entities/entity';
 
 const collection = 'contents';
 
 export async function add(content: Content & Entity) {
-    content.createdAt = Date.now();
-    content.locked = false;
-    return db.insertOne(collection, content) || {};
+    try {
+        content.createdAt = Date.now();
+        content.locked = false;
+        const result = await db.insertOne(collection, content) || {};
+        return result;
+    } catch (err: any) {
+        logger.error(err?.message)
+    }
 }
 
 export async function update(content: Content & Entity) {

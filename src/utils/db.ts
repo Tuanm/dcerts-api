@@ -25,11 +25,17 @@ export class DB {
         return this.collection(collection).distinct(field, query);
     }
 
-    async search(collection: string, query: Object, sort?: any, limit: number = 0) {
+    async search(collection: string, query: Object, sort?: any, page: number = 0, limit: number = 0) {
         let cursor = this.collection(collection).find(query);
+        const total = await this.collection(collection).count(query);
         if (sort) cursor = cursor.sort(sort);
+        if (page > 0 && limit) cursor = cursor.skip((page - 1) * limit);
         if (limit) cursor = cursor.limit(limit);
-        return cursor?.toArray();
+        const data = await cursor.toArray();
+        return {
+            data,
+            total,
+        };
     }
 
     async insertOne(collection: string, entity: any) {
