@@ -1,3 +1,4 @@
+import { ethers } from 'ethers';
 import logger from '../utils/logger';
 import { db } from './db';
 import { groupsOfMember } from './db/groups';
@@ -34,6 +35,9 @@ function validateContentQuery(query: any = {}) {
     }
     if (query.id !== undefined) {
         query.id = Number(query.id);
+    }
+    if (query.tag) {
+        query.tag = ethers.utils.keccak256(ethers.utils.toUtf8Bytes(query.tag));
     }
     return query;
 }
